@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/asl_fops" android:title="@string/aslimage_fops"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/options_item" android:title="@string/options_item"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/help_item" android:title="@string/title_activity_help"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/exit_item" android:title="@string/exit_item"
+        android:orderInCategory="100" app:showAsAction="never" />
+</menu>

@@ -1,0 +1,124 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="@android:color/black">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="326dp"
+        android:id="@+id/scrollView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:textColor="#fff80300"
+            android:gravity="center" />
+    </ScrollView>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/asl_protocol"
+        android:id="@+id/button"
+        android:onClick="protocolClick"
+        android:background="@android:color/black"
+        android:focusable="true"
+        android:elegantTextHeight="false"
+        android:ellipsize="marquee"
+        android:clickable="true"
+        android:gravity="center|left"
+        android:textColor="#ff0ac803"
+        android:layout_below="@+id/scrollView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignLeft="@+id/scrollView" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#ff0ac803"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textIsSelectable="false"
+        android:layout_gravity="center"
+        android:gravity="center|top" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textColor="#ff0ac803"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:textColor="#ff0ac803"
+        android:textStyle="bold"
+        android:layout_gravity="center|top"
+        android:gravity="center"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/permissions_but"
+        android:id="@+id/button3"
+        style="?android:attr/buttonStyleSmall"
+        android:background="@android:color/black"
+        android:clickable="true"
+        android:gravity="center|right"
+        android:onClick="permissionClick"
+        android:layout_alignTop="@+id/button"
+        android:layout_alignRight="@+id/scrollView"
+        android:layout_alignEnd="@+id/scrollView"
+        android:textColor="#ff0ac803" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        android:onClick="aslimg_click"
+        android:gravity="center"
+        android:textColor="#fff80300"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/log_but"
+        android:id="@+id/button2"
+        android:textColor="#ff0ac803"
+        android:gravity="center|left"
+        android:background="@android:color/black"
+        android:clickable="true"
+        android:onClick="detectedClick"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_below="@+id/scrollView"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
