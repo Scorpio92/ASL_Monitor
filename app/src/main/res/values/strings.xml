@@ -1,14 +1,13 @@
 <resources>
     <string name="app_name">ASL Monitor</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="asl_protocol">ASL PROTOCOL</string>
     <string name="asl_img_but">ASL Image</string>
     <string name="permissions_but">PERMISSIONS</string>
     <string name="log_but">DETECTED</string>
-    <string name="fix_it">FIX IT !</string>
-    <string name="image_help">Attention! You need copy recovery image - "asl.img" file from computer to your SD Card and after it press on "FIX IT !" button and wait</string>
+    <string name="fix_it">FIX IT</string>
+    <string name="image_help">Attention! You need copy recovery image - "asl.img" file from computer to your SD Card and after it press on "FIX IT" button and wait.</string>
     <string name="copy_asl_title">Operation log:</string>
     <string name="aslimage_fops">Operations with recovery image</string>
     <string name="fops_help">Available three file operations with asl.img file: \n 1) Check - compare SHA-1 sum of the asl.img file with original. \n 2) Remove - delete asl.img from DATA partition. \n 3) Copy - create duplicate asl.img in DATA partition using asl.img from SD Card.</string>
@@ -22,4 +21,5 @@
     <string name="sum_check_in_data_and_sd">In DATA partition and SD Card</string>
     <string name="title_activity_help">Help</string>
     <string name="help_activity_text">ASL Monitor is app for looking ASL log files (protocol) and control recovery image. \n On the main screen display info about last checking history as ASL Protocol, Detected modifications and ASL Permissions config. Also you can see in bottom info about asl.img (if it not exist in DATA Partition or SD Card) \n In Menu screen you can select \"Operations with recovery image\" item. It is screen where you can check SHA-1 sum, remove from DATA and copy to DATA from SD Card asl.img. \n In "Options" screen you can set SHA-1 checking parameters \n Press "Exit" item for exit from app.</string>
+    <string name="proto_progress">Protocol loading...</string>
 </resources>

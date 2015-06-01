@@ -1,6 +1,7 @@
 package com.example.scorpio92.asl_monitor;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -21,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import android.os.Handler;
+import android.os.Message;
 
 import static android.view.Gravity.CENTER;
 import static android.view.Gravity.LEFT;
@@ -29,6 +33,7 @@ import static android.view.Gravity.LEFT;
 public class MainActivity extends ActionBarActivity {
 
     private TextView mTextView;
+    private TextView protoLoading;
     private TextView TOP;
     private TextView ASL_STATUS;
     private TextView CHECK_STATUS;
@@ -40,17 +45,23 @@ public class MainActivity extends ActionBarActivity {
     private Button but;
     private Button but2;
     private Button but3;
+    private ProgressBar myProgressBar;
+    private int myProgress = 0;
 
     private String RECOVERY_IMG = "asl.img";
     private String DATA_IMG_PATH = "/data/asl/asl.img";
     private boolean DataExist=true;
     private boolean SdExist=true;
+    private String Protocol="";
+    private Integer filesCount;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         TOP=(TextView)findViewById(R.id.textView2);
 
@@ -101,7 +112,8 @@ public class MainActivity extends ActionBarActivity {
                         if (check_status.equals("0")) {
                             CHECK_STATUS.setText("CHECK STATUS: SUCCESSFUL");
                             //скрываем кнопку лога
-                            but3.setEnabled(false);
+                            //but3.setEnabled(false);
+                            but3.setVisibility(View.INVISIBLE);
                         }
                         if (check_status.equals("1")) {
                             CHECK_STATUS.setText("CHECK STATUS: FOUND TEMPERING");
@@ -113,26 +125,12 @@ public class MainActivity extends ActionBarActivity {
                         e2.printStackTrace();
                     }
 
-                    try {
-                        but.setEnabled(false);
-                        mTextView.setText("");
-                        mTextView.setGravity(LEFT);
-                        mTextView.setTextColor(Color.GREEN);
+                    myProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+                    protoLoading = (TextView) findViewById(R.id.textView13);
 
-                        File f = new File("/dev/asl/asl_protocol");
-                        // открываем поток для чтения
-                        BufferedReader br4 = new BufferedReader(new FileReader(f));
-                        String str = "";
-                        // читаем содержимое
-                        while ((str = br4.readLine()) != null) {
-                            mTextView.append(str + "\n");
-                        }
-
-                    } catch (FileNotFoundException e3) {
-                        e3.printStackTrace();
-                    } catch (IOException e3) {
-                        e3.printStackTrace();
-                    }
+                    protocolLoad();
+                    //new Thread(myThread).start();
+                    //myProgressBar.setVisibility(View.INVISIBLE);
 
                     //ASL.img
                     File asl_img = new File(DATA_IMG_PATH);
@@ -161,15 +159,15 @@ public class MainActivity extends ActionBarActivity {
                     }
                     if((DataExist==false)&&(SdExist==true))
                     {
-                        ASL_IMG.append("Recovery image not found in DATA partition" + "\n" + "FIX IT !");
+                        ASL_IMG.append("Recovery image not found in DATA partition !");
                     }
                     if((DataExist==true)&&(SdExist==false))
                     {
-                        ASL_IMG.append("Recovery image not found in SD Card" + "\n" + "FIX IT !");
+                        ASL_IMG.append("Recovery image not found in SD Card !");
                     }
                     if((DataExist==false)&&(SdExist==false))
                     {
-                        ASL_IMG.append("Recovery image not found in DATA partition and SD Card" + "\n" + "FIX IT !");
+                        ASL_IMG.append("Recovery image not found in DATA partition and SD Card !");
                     }
 
                 }
@@ -235,23 +233,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void protocolClick(View view) {
+    private void getFilesCount()
+    {
         try {
-            but.setEnabled(false);
-            but2.setEnabled(true);
-            but3.setEnabled(true);
-            mTextView.setText("");
-            mTextView.setGravity(LEFT);
-            mTextView.setTextColor(Color.GREEN);
-
-            File f = new File("/dev/asl/asl_protocol");
+            File f = new File("/proc/asl/files_count");
             // открываем поток для чтения
             BufferedReader br = new BufferedReader(new FileReader(f));
-            String str = "";
             // читаем содержимое
-            while ((str = br.readLine()) != null) {
-                mTextView.append(str + "\n");
-            }
+            filesCount = Integer.parseInt(br.readLine());
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -260,6 +249,73 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void protocolLoad() {
+        but.setEnabled(false);
+        mTextView.setText("");
+        mTextView.setGravity(LEFT);
+        mTextView.setTextColor(Color.GREEN);
+
+        if (Protocol.equals("")) {
+            getFilesCount();
+            myProgressBar.setVisibility(View.VISIBLE);
+            myProgressBar.setMax(filesCount);
+            //myProgressBar.setProgressDrawable(getResources().getDrawable(R.drawable.abc_dialog_material_background_light));
+
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        File f = new File("/dev/asl/asl_protocol");
+                        // открываем поток для чтения
+                        BufferedReader br4 = new BufferedReader(new FileReader(f));
+                        String str = "";
+                        //String str2 = "";
+                        // читаем содержимое
+                        while ((str = br4.readLine()) != null) {
+
+                            Protocol = Protocol + str + "\n";
+                            myHandle.sendMessage(myHandle.obtainMessage());
+                        }
+                        mTextView.post(new Runnable() {
+                            public void run() {
+                                mTextView.append(Protocol);
+                                myProgressBar.setVisibility(View.INVISIBLE);
+                                protoLoading.setVisibility(View.INVISIBLE);
+
+                            }
+                        });
+
+                    } catch (FileNotFoundException e3) {
+                        e3.printStackTrace();
+                    } catch (IOException e3) {
+                        e3.printStackTrace();
+                    }
+                }
+
+                Handler myHandle = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        // TODO Auto-generated method stub
+                        if (myProgress < filesCount) {
+                            myProgress++;
+                            myProgressBar.setProgress(myProgress);
+                        } else {
+                            myProgressBar.setProgress(0);
+                            myProgress = 0;
+                        }
+                    }
+                };
+            }).start();
+        }
+        else {
+            mTextView.append(Protocol);
+        }
+    }
+
+    public void protocolClick(View view) {
+            but2.setEnabled(true);
+            but3.setEnabled(true);
+            protocolLoad();
+    }
 
     public void permissionClick(View view) {
         try {

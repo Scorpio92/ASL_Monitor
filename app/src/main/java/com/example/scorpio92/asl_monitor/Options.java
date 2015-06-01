@@ -1,5 +1,6 @@
 package com.example.scorpio92.asl_monitor;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,8 @@ public class Options extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
+
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         rb1 = (RadioButton)findViewById(R.id.radioButton);
         rb2 = (RadioButton)findViewById(R.id.radioButton2);
